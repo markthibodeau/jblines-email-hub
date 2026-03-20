@@ -43,7 +43,7 @@ class Email(Base):
 
     sender: Mapped[str] = mapped_column(String(255), index=True)
     sender_name: Mapped[str] = mapped_column(String(255), nullable=True)
-    recipient: Mapped[str] = mapped_column(String(512))
+    recipient: Mapped[str] = mapped_column(Text, nullable=True)
     subject: Mapped[str] = mapped_column(Text, nullable=True)
     body_text: Mapped[str] = mapped_column(Text, nullable=True)
     body_snippet: Mapped[str] = mapped_column(Text, nullable=True)
