@@ -24,7 +24,7 @@ CLASSIFICATION_PROMPT = """You are an intelligent email classifier for a company
 
 Analyze the email below and return a JSON object with the following fields:
 
-{
+{{
   "category": "customer" | "billing" | "schedule" | "general",
   "summary": "1-2 sentence plain-English summary of what this email is about",
   "sentiment": "positive" | "neutral" | "negative" | "urgent",
@@ -41,7 +41,7 @@ Analyze the email below and return a JSON object with the following fields:
   "meeting_time": "HH:MM" | null,
   "meeting_duration_minutes": 60 | null,
   "meeting_location": "location or video link (or null)"
-}
+}}
 
 Category definitions:
 - customer: General inquiry, support request, or relationship email from/to a customer
