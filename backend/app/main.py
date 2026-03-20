@@ -32,11 +32,12 @@ async def lifespan(app: FastAPI):
     scheduler.start()
     logger.info("Email sync scheduler started (every 15 minutes)")
 
-    # Run an immediate sync on startup
-    try:
-        await sync_all_inboxes()
-    except Exception as e:
-        logger.error(f"Initial sync failed: {e}")
+    # Kick off initial sync as a background task so the server can open
+    # its port immediately — a full 180-day sync across 6 inboxes can
+    # take several minutes and would cause Render's health check to time out
+    import asyncio
+    asyncio.create_task(sync_all_inboxes())
+    logger.info("Initial email sync started in background")
 
     yield
 
