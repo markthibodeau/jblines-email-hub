@@ -1,0 +1,1184 @@
+<title>LeeBoy 8520 Field Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#ECEEF0; --surface:#FFFFFF; --surface-2:#F4F5F7; --ink:#17191C; --ink-2:#4B525B; --ink-3:#7A828C;
+  --line:#D2D6DB; --line-2:#E3E6EA;
+  --accent:#E4521B; --accent-soft:#FBE7DD; --accent-ink:#FFFFFF;
+  --amber:#B57A00; --amber-soft:#FBF0D3; --red:#B93A2B; --red-soft:#F9E1DD; --green:#2F7A52; --green-soft:#DDF0E4; --blue:#2A63A8; --blue-soft:#DDE8F6;
+  --mat:#2A2C30; --mat-2:#3A3D42; --mat-3:#55595F;
+  --shadow:0 1px 2px rgba(20,22,26,.06),0 6px 20px rgba(20,22,26,.06);
+  --radius:6px;
+  --display:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
+  --body:"Source Sans 3","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#131517; --surface:#1C1F23; --surface-2:#23272C; --ink:#EDEFF2; --ink-2:#AEB5BE; --ink-3:#7F8791;
+    --line:#343A41; --line-2:#2A2F35;
+    --accent:#FF6B33; --accent-soft:#3A2519; --accent-ink:#161616;
+    --amber:#E3AA2E; --amber-soft:#3A2F14; --red:#EF6B5C; --red-soft:#3D1F1B; --green:#5BBE85; --green-soft:#17301F; --blue:#78ACEC; --blue-soft:#182A3F;
+    --mat:#0E0F11; --mat-2:#1A1C1F; --mat-3:#2B2E33;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#131517; --surface:#1C1F23; --surface-2:#23272C; --ink:#EDEFF2; --ink-2:#AEB5BE; --ink-3:#7F8791;
+  --line:#343A41; --line-2:#2A2F35;
+  --accent:#FF6B33; --accent-soft:#3A2519; --accent-ink:#161616;
+  --amber:#E3AA2E; --amber-soft:#3A2F14; --red:#EF6B5C; --red-soft:#3D1F1B; --green:#5BBE85; --green-soft:#17301F; --blue:#78ACEC; --blue-soft:#182A3F;
+  --mat:#0E0F11; --mat-2:#1A1C1F; --mat-3:#2B2E33;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}
+h1,h2,h3,h4{font-family:var(--display);line-height:1.05;margin:0;text-wrap:balance;letter-spacing:.005em}
+h1{font-size:clamp(40px,7vw,72px);font-weight:700;text-transform:uppercase}
+h2{font-size:clamp(28px,4vw,40px);font-weight:700;text-transform:uppercase}
+h3{font-size:22px;font-weight:600}
+h4{font-size:18px;font-weight:600}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Top bar */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+.topbar-inner{max-width:1180px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:14px;height:56px}
+.brand{font-family:var(--display);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;display:flex;align-items:center;gap:10px}
+.brand .tag{background:var(--accent);color:var(--accent-ink);font-size:12px;padding:2px 7px;border-radius:3px;letter-spacing:.08em;font-family:var(--mono);font-weight:500}
+.nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-left:auto;-webkit-overflow-scrolling:touch}
+.nav::-webkit-scrollbar{display:none}
+.nav a{white-space:nowrap;text-decoration:none;color:var(--ink-2);font-size:14px;font-weight:600;padding:8px 10px;border-radius:4px}
+.nav a:hover,.nav a.active{color:var(--ink);background:var(--surface-2)}
+.nav a.hot{color:var(--accent)}
+
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:0 80px}
+section.block{padding-block:56px 8px;border-top:1px solid var(--line-2)}
+section.block:first-of-type{border-top:0}
+.sec-head{display:grid;gap:8px;margin-bottom:28px;max-width:72ch}
+.sec-head p{color:var(--ink-2);font-size:17px}
+
+/* Hero */
+.hero{padding-block:44px 40px;display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:end}
+.hero .lede{font-size:19px;color:var(--ink-2);max-width:60ch;margin-top:14px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);padding:10px 16px;border-radius:var(--radius);font-weight:600;text-decoration:none;color:var(--ink);cursor:pointer}
+.btn:hover{border-color:var(--ink-3)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.05)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.plate{background:var(--mat);color:#F1EEE6;border-radius:8px;padding:20px 22px;font-family:var(--mono);font-size:13px;display:grid;gap:8px;border:1px solid #000;position:relative}
+.plate::before{content:"";position:absolute;inset:8px;border:1px dashed rgba(255,255,255,.18);border-radius:5px;pointer-events:none}
+.plate .k{color:#A9A59B;letter-spacing:.1em;font-size:11px}
+.plate .row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:6px}
+.plate .row:last-child{border-bottom:0;padding-bottom:0}
+.plate strong{font-weight:500;color:#FFF}
+
+/* Grids & cards */
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+.card h3{margin-bottom:8px}
+.card p,.card li{color:var(--ink-2)}
+ul.tight{margin:8px 0 0;padding-left:18px;display:grid;gap:5px}
+ol.steps{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:12px}
+ol.steps>li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
+ol.steps>li::before{content:counter(s,decimal-leading-zero);font-family:var(--display);font-weight:700;font-size:28px;line-height:1;color:var(--accent)}
+ol.steps b{display:block;font-size:17px;color:var(--ink);margin-bottom:2px}
+ol.steps p{color:var(--ink-2)}
+.callout{border-left:4px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;color:var(--ink)}
+.callout.warn{border-color:var(--red);background:var(--red-soft)}
+.callout.info{border-color:var(--blue);background:var(--blue-soft)}
+.callout.amber{border-color:var(--amber);background:var(--amber-soft)}
+.callout b{font-weight:700}
+
+/* Tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line-2);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:500;background:var(--surface-2)}
+tr:last-child td{border-bottom:0}
+td.num{white-space:nowrap}
+
+/* Checklist */
+.check{display:grid;gap:8px}
+.check label{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:11px 14px;cursor:pointer}
+.check input{width:20px;height:20px;margin-top:2px;accent-color:var(--accent);flex:none}
+.check label span{color:var(--ink)}
+.check label small{display:block;color:var(--ink-3);font-size:13px}
+.check label.done span{color:var(--ink-3);text-decoration:line-through}
+.progress{display:flex;align-items:center;gap:12px;margin-bottom:14px;font-family:var(--mono);font-size:13px;color:var(--ink-2)}
+.bar{flex:1;height:8px;background:var(--line-2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green);width:0;transition:width .25s}
+
+/* Defect finder */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 12px;font-size:14px;font-weight:600;cursor:pointer;color:var(--ink-2)}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.search{display:flex;gap:8px;margin-bottom:14px}
+.search input{flex:1;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);color:var(--ink)}
+.defects{display:grid;gap:14px}
+.defect{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;border-left:5px solid var(--amber)}
+.defect[data-sev="high"]{border-left-color:var(--red)}
+.defect[data-sev="low"]{border-left-color:var(--blue)}
+.defect summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:132px 1fr auto;gap:16px;align-items:center;padding:12px 16px 12px 12px}
+.defect summary::-webkit-details-marker{display:none}
+.defect summary .sk{width:132px;height:74px;border-radius:4px;overflow:hidden;background:var(--mat);flex:none}
+.defect summary .sk svg{display:block;width:100%;height:100%}
+.defect summary h3{font-size:21px}
+.defect summary .sub{color:var(--ink-2);font-size:14px;margin-top:2px}
+.defect .meta{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.pill{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:3px;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line-2)}
+.pill.sev-high{background:var(--red-soft);color:var(--red);border-color:transparent}
+.pill.sev-med{background:var(--amber-soft);color:var(--amber);border-color:transparent}
+.pill.sev-low{background:var(--blue-soft);color:var(--blue);border-color:transparent}
+.defect .body{border-top:1px solid var(--line-2);padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:18px 28px}
+.defect .body h4{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px;font-weight:500}
+.defect .body p{color:var(--ink)}
+.defect .body ul,.defect .body ol{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--ink)}
+.defect .body li small{color:var(--ink-3);display:block}
+.defect .full{grid-column:1/-1}
+.defect .fixes li::marker{color:var(--accent);font-weight:700}
+.defect .body .quick{background:var(--surface-2);border-radius:4px;padding:10px 12px;font-size:15px}
+.defect[open] summary{background:var(--surface-2)}
+
+/* Diagnose */
+.diag{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:20px}
+.drop{border:2px dashed var(--line);border-radius:var(--radius);padding:22px;text-align:center;background:var(--surface);cursor:pointer;color:var(--ink-2)}
+.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.drop b{color:var(--ink)}
+.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.thumbs .t{position:relative;width:96px;height:72px;border-radius:4px;overflow:hidden;border:1px solid var(--line);background:var(--mat)}
+.thumbs .t img{width:100%;height:100%;object-fit:cover;display:block}
+.thumbs .t button{position:absolute;top:2px;right:2px;border:0;background:rgba(0,0,0,.65);color:#fff;border-radius:3px;width:20px;height:20px;line-height:1;cursor:pointer;font-size:14px}
+.thumbs .t .lab{position:absolute;left:0;bottom:0;right:0;background:rgba(0,0,0,.6);color:#fff;font-family:var(--mono);font-size:10px;padding:1px 4px}
+.field{display:grid;gap:4px}
+.field label{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.field input,.field select,.field textarea{font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--ink);width:100%}
+.field textarea{min-height:76px;resize:vertical}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form{display:grid;gap:12px;margin-top:14px}
+.result{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;min-height:260px}
+.result .status{font-family:var(--mono);font-size:13px;color:var(--ink-3);display:flex;align-items:center;gap:10px}
+.spinner{width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.verdict{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;padding-bottom:12px;border-bottom:1px solid var(--line-2);margin-bottom:12px}
+.verdict h3{font-size:26px}
+.conf{font-family:var(--mono);font-size:12px;text-align:right;color:var(--ink-3)}
+.conf b{display:block;font-size:22px;color:var(--ink);font-weight:500}
+.rsec{margin-top:14px}
+.rsec h4{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px;font-weight:500}
+.rsec ol,.rsec ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.rsec li small{color:var(--ink-3);display:block}
+.lik{font-family:var(--mono);font-size:11px;padding:1px 6px;border-radius:3px;background:var(--surface-2);margin-left:6px;text-transform:uppercase;letter-spacing:.05em}
+.lik.high{background:var(--red-soft);color:var(--red)}.lik.medium{background:var(--amber-soft);color:var(--amber)}.lik.low{background:var(--blue-soft);color:var(--blue)}
+.example-tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:var(--amber-soft);color:var(--amber);padding:2px 8px;border-radius:3px;margin-bottom:10px}
+.err{color:var(--red);font-weight:600}
+.unavail{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;color:var(--ink-2)}
+
+/* Chat */
+.chat{display:grid;gap:10px}
+.chat .log{display:grid;gap:10px;min-height:120px}
+.msg{padding:12px 14px;border-radius:var(--radius);max-width:80ch;white-space:pre-wrap}
+.msg.u{background:var(--ink);color:var(--bg);justify-self:end}
+.msg.a{background:var(--surface);border:1px solid var(--line)}
+.chat form{display:flex;gap:8px}
+.chat input{flex:1;font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);color:var(--ink)}
+.sugg{display:flex;flex-wrap:wrap;gap:6px}
+
+/* Calculators */
+.calc{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;display:grid;gap:12px}
+.calc .out{background:var(--mat);color:#fff;border-radius:4px;padding:12px 14px;font-family:var(--mono);display:grid;gap:4px}
+.calc .out b{font-size:26px;font-weight:500}
+.calc .out small{color:#B8B4AA;font-size:12px}
+
+footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-3);font-size:13px;display:grid;gap:6px}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr}
+  .g3,.g2{grid-template-columns:1fr}
+  .diag{grid-template-columns:1fr}
+  .defect .body{grid-template-columns:1fr}
+  .defect summary{grid-template-columns:96px 1fr}
+  .defect summary .sk{width:96px;height:56px}
+  .defect .meta{grid-column:2;justify-content:flex-start}
+  .frow{grid-template-columns:1fr}
+  .topbar-inner{gap:8px}
+}
+</style>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">LeeBoy 8520 <span class="tag">JB LINES</span></div>
+    <nav class="nav" id="nav">
+      <a href="#quickstart">Quick start</a>
+      <a href="#machine">Machine</a>
+      <a href="#controls">Controls</a>
+      <a href="#inspection">Daily check</a>
+      <a href="#setup">Screed setup</a>
+      <a href="#paving">Paving</a>
+      <a href="#troubleshoot">Screed issues</a>
+      <a href="#diagnose" class="hot">Diagnose</a>
+      <a href="#ask">Ask</a>
+      <a href="#calc">Calculators</a>
+      <a href="#maint">Maintenance</a>
+      <a href="#safety">Safety</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section class="hero" id="top">
+  <div>
+    <div class="eyebrow">Operator's field manual · 8520B / 8520C · Legend HD screed</div>
+    <h1>Read the mat.<br>Fix the screed.</h1>
+    <p class="lede">Everything a JB Lines operator needs to set up, run and troubleshoot the LeeBoy 8520 commercial paver. Every screed defect is shown with what it looks like, what it means and the fix in the order to try it. Snap a photo or short video of the mat and get a diagnosis on the spot.</p>
+    <div class="hero-actions">
+      <a class="btn primary" href="#diagnose">Diagnose a photo or video</a>
+      <a class="btn" href="#troubleshoot">Screed issue finder</a>
+      <a class="btn" href="#setup">Screed setup sequence</a>
+    </div>
+  </div>
+  <div class="plate" aria-label="Key numbers">
+    <div class="k">NUMBERS THAT MATTER</div>
+    <div class="row"><span>Mix temp at the screed</span><strong>275–325 °F</strong></div>
+    <div class="row"><span>Don't lay below</span><strong>250 °F</strong></div>
+    <div class="row"><span>Screed plate warm-up</span><strong>15–20 min</strong></div>
+    <div class="row"><span>Head of material</span><strong>auger shaft centre</strong></div>
+    <div class="row"><span>Wait after any change</span><strong>5 tow-arm lengths</strong></div>
+    <div class="row"><span>Roll-down allowance</span><strong>+20–25 %</strong></div>
+    <div class="row"><span>Min lift thickness</span><strong>3 × top rock size</strong></div>
+    <div class="row"><span>Joint overlap</span><strong>1–1.5 in</strong></div>
+  </div>
+</section>
+
+<!-- QUICK START -->
+<section class="block" id="quickstart">
+  <div class="sec-head">
+    <div class="eyebrow">01 · Quick start</div>
+    <h2>The paving day in twelve moves</h2>
+    <p>Ninety percent of mat defects trace back to two things: an unmanaged head of material and a screed that was never set up properly. This sequence prevents both. Print it, tape it in the cab.</p>
+  </div>
+  <ol class="steps">
+    <li><div><b>Walk-around and fluids</b><p>Engine oil, hydraulic level, coolant, fuel. Check tracks or tires, conveyor chains, auger flights and kickback paddles for wear. Look for hydraulic leaks under the machine. Full checklist in <a href="#inspection">Daily check</a>.</p></div></li>
+    <li><div><b>Start engine, turn screed heat on immediately</b><p>Electric heat needs 15–20 minutes to bring the plates to working temperature. Start it before the first truck is even called in. Confirm the generator light and every heat zone light including the extensions.</p></div></li>
+    <li><div><b>Set paving width and level the extensions</b><p>Run the hydraulic extensions to the job width. Lay a straightedge across the bottom of the main plate and each extension. Set the extension so the rear edge is flush to a hair high (1/32–1/16 in) and the front edge matches the main screed's angle.</p></div></li>
+    <li><div><b>Set crown</b><p>Set the lead (front) crown 1/8 in higher than the tail (rear) crown for most mixes. This lets material flow to the centre and stops centreline tearing. Crown or valley the rear to the job profile only.</p></div></li>
+    <li><div><b>Block up and null the screed</b><p>Set starting blocks equal to the loose depth (compacted depth plus 20–25 %). Lower the screed onto the blocks, then run the thickness screws until the plate sits flat, and add a quarter to half turn positive angle of attack. Screed in float, not locked.</p></div></li>
+    <li><div><b>Set end gates and the joint</b><p>End gates down on grade with spring pressure. On a longitudinal joint, the end gate rides on top of the cold mat with 1–1.5 in overlap and the hot side set 1/4 in per inch of depth higher for roll-down.</p></div></li>
+    <li><div><b>Confirm mix temperature</b><p>Probe the load in the truck bed, not the crust. 275–325 °F is the working window for hot mix. Reject or set aside crusted lumps. Log the temp for the job record.</p></div></li>
+    <li><div><b>Fill the hopper and charge the augers</b><p>Run conveyors and augers until mix reaches the auger shaft centreline across the full width, including in front of the extensions. Do not move until the head is built.</p></div></li>
+    <li><div><b>Pull off the blocks at paving speed</b><p>Start at the speed you intend to pave at and hold it. Check depth with a gauge 10 ft out, then again at 40 ft. Adjust in small moves and wait five tow-arm lengths before the next.</p></div></li>
+    <li><div><b>Manage the feed, not the screed</b><p>Set the feed sensors so augers and conveyors run nearly continuously (85–90 % of the time) at a slow speed. Surging feed is the number one cause of ripples, shadows and thickness drift.</p></div></li>
+    <li><div><b>Trucks: hitch, never bump</b><p>Truck stops short, paver drives up and hitches, truck stays in neutral with brakes off. Fold wings only when the hopper still has material in it. Never run the hopper empty between trucks.</p></div></li>
+    <li><div><b>Stop clean, restart clean</b><p>When stopping: stop the conveyors with a full head, kill vibration, leave the screed down. Restart at paving speed with no thickness adjustment. Rake any mark immediately and get the roller on it.</p></div></li>
+  </ol>
+</section>
+
+<!-- MACHINE -->
+<section class="block" id="machine">
+  <div class="sec-head">
+    <div class="eyebrow">02 · Machine</div>
+    <h2>Know the 8520</h2>
+    <p>The 8520 is a 9-ton, conveyor-fed commercial paver with the Legend HD free-floating screed. Figures below are published manufacturer specs for the B and C series. Confirm against the serial plate and the printed manual for your unit, since options and years vary.</p>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Item</th><th>8520B</th><th>8520C</th><th>Why it matters to the operator</th></tr></thead>
+      <tbody>
+        <tr><td>Engine</td><td class="num">Kubota turbo diesel, Tier 4 Final, 106 hp</td><td class="num">Kubota turbo diesel, Tier 4 Final, 125 hp</td><td>Tier 4 Final needs DEF-free regen cycles managed by the ECU. Do not shut down mid-regen unless it is an emergency.</td></tr>
+        <tr><td>Hopper</td><td class="num">9 ton</td><td class="num">9 ton</td><td>Roughly one third to one half of a tandem load. Keep it at least one third full at all times to avoid segregation when folding wings.</td></tr>
+        <tr><td>Conveyors</td><td class="num">Dual 36 in slat conveyors</td><td class="num">Dual 36 in slat conveyors</td><td>Wide and slow by design to limit segregation. Each side is independently controlled so you can balance feed left to right.</td></tr>
+        <tr><td>Augers</td><td class="num">Dual 12 in, manual or automatic</td><td class="num">Dual 12 in, manual or automatic</td><td>Independent left and right. Auger extensions must be fitted when paving wide so the auger ends stay within about 12–18 in of the end gate.</td></tr>
+        <tr><td>Screed</td><td class="num">Legend HD, electric heat, 3,260 lb</td><td class="num">Legend HD, electric heat, 3,450 lb</td><td>Free-floating with hydraulic front-mounted extensions. Weight is what gives you pre-compaction, so keep the plates flat and the extensions level.</td></tr>
+        <tr><td>Paving width</td><td class="num">8 ft to 15 ft</td><td class="num">8 ft to 15 ft</td><td>Hydraulic extensions cover 8–13 ft; bolt-on extensions carry you to 15 ft. Balance the extensions left and right so the screed is not twisted.</td></tr>
+        <tr><td>Paving depth</td><td class="num">Up to 6 in</td><td class="num">Up to 6 in</td><td>Tow point actuators give 0–6 in of travel. Depth is always verified with a gauge, never assumed from the crank count.</td></tr>
+        <tr><td>Travel speed</td><td class="num">Up to 3.5 mph</td><td class="num">Up to 3.5 mph</td><td>Paving speed is set by plant output and the roller train, never by the paver's maximum. See the <a href="#calc">speed calculator</a>.</td></tr>
+        <tr><td>Operating weight</td><td class="num">≈ 19,760 lb</td><td class="num">≈ 20,000 lb</td><td>Trailer, ramp and permit planning. Check the serial plate for your exact configuration.</td></tr>
+        <tr><td>Steering and stations</td><td class="num">Dual electronic steering, high and low deck positions</td><td class="num">Dual electronic steering, high and low deck positions</td><td>Tow point and thickness switches are duplicated at both stations so the screed operator and the driver can both make grade adjustments.</td></tr>
+        <tr><td>Grade and slope</td><td class="num">Optional automatic grade and slope</td><td class="num">Optional automatic grade and slope</td><td>Automation only holds what you set. A bad manual setup gets automated into a bad mat.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="grid g3" style="margin-top:18px">
+    <div class="card"><h3>What the screed actually does</h3><p>The Legend is a free-floating screed pulled by tow arms. It rides on the mix like a water ski. Three things set its height: the angle of attack, the head of material pushing under it, and the paver speed. Change any one and the screed seeks a new level over the next 5 tow-arm lengths. Every screed defect in this manual is one of those three being unstable.</p></div>
+    <div class="card"><h3>Head of material</h3><p>The pile of mix in front of the screed. Correct is mix at the centre of the auger shaft, held constant across the full width. Too much and the screed is pushed up and buries the augers. Too little and the screed drops and the augers starve the outside. Every fluctuation prints on the mat.</p></div>
+    <div class="card"><h3>Angle of attack</h3><p>The tilt of the screed plate relative to the mat. More positive angle means the screed climbs and the mat thickens. Thickness screws and tow point actuators both change it. Small moves only: a quarter turn, then wait 30–50 ft before judging.</p></div>
+  </div>
+</section>
+
+<!-- CONTROLS -->
+<section class="block" id="controls">
+  <div class="sec-head">
+    <div class="eyebrow">03 · Controls</div>
+    <h2>Operator and screed stations</h2>
+    <p>Names follow the LeeBoy 8520C safety and operation manual. Your panel layout may differ slightly by year. Learn what each control does to the mat before you touch it under load.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Operator station (deck)</h3>
+      <ul class="tight">
+        <li><b>Key and engine controls</b> with throttle. Pave at full rated rpm for consistent hydraulic flow to the conveyors, augers and vibration.</li>
+        <li><b>Forward, neutral, reverse and speed dial.</b> Hydrostatic drive. Set the paving speed once and leave it. Do not creep the dial during a pull.</li>
+        <li><b>Dual electronic steering.</b> Small inputs. Steering corrections show up as edge wander behind the screed 20 ft later.</li>
+        <li><b>Conveyor switches, left and right,</b> with manual or auto. Auto uses the flow gates and sensors to hold the head of material.</li>
+        <li><b>Auger switches, left and right,</b> manual or auto, with speed control. Independent sides let you feed a wide extension harder.</li>
+        <li><b>Hopper wing switches.</b> Fold only with material still in the hopper so crusted mix blends in rather than dumping as a cold lump.</li>
+        <li><b>Screed raise, lower and float.</b> Paving is always in float. Lock only for transport and blocking.</li>
+        <li><b>Tow point switches with gauges, both sides.</b> Electric actuators, 0–6 in of travel. Refer to both gauges to keep the sides matched.</li>
+        <li><b>Thicker and thinner switches, both sides,</b> driving the electric tow screws. These are your fine depth control while paving.</li>
+        <li><b>Vibration switch.</b> On while moving for pre-compaction, off while stopped or it will settle the screed and leave a mark.</li>
+        <li><b>Truck hitch.</b> Engages the truck's rear tires so the paver pushes the truck. Prevents bumping and roll-back marks.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Screed station (Legend HD)</h3>
+      <ul class="tight">
+        <li><b>Thickness cranks (flight screws), left and right.</b> Manual depth control on the screed itself. One quarter turn at a time.</li>
+        <li><b>Crown and valley mechanism.</b> Front (lead) crown and rear (tail) crown adjustment at the centre of the screed. Lead crown slightly positive for flow; tail crown to the road profile.</li>
+        <li><b>Angle of attack adjuster (HD Pro).</b> Sets the base pitch of the main plate independent of the tow point.</li>
+        <li><b>Extension height and slope adjusters.</b> Match each extension's trailing edge to the main plate and set the slope for the crown or cross-fall.</li>
+        <li><b>Pre-strike-off.</b> Sets how much material passes under the extension's leading edge. Lower it to reduce push on the extension.</li>
+        <li><b>Extension in and out switches.</b> Hydraulic width changes on the fly. Bring both sides out equally when possible.</li>
+        <li><b>End gates.</b> Spring-loaded to ride grade. Set on the surface, with the spring providing down pressure.</li>
+        <li><b>Screed heat switch and zone lights.</b> Generator-driven electric elements in the main plate and each extension. All lights on means all elements alive.</li>
+        <li><b>Extension power plugs.</b> Extensions heat only when plugged in. A cold extension is the most common cause of outer edge tearing.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout info" style="margin-top:16px"><b>Two people own the mat.</b> The driver owns speed, steering and trucks. The screed operator owns feed, depth and the joint. Neither adjusts the other's controls without calling it out. Uncoordinated adjustments are how long waves get built into a lot.</div>
+</section>
+
+<!-- INSPECTION -->
+<section class="block" id="inspection">
+  <div class="sec-head">
+    <div class="eyebrow">04 · Daily check</div>
+    <h2>Pre-operation inspection</h2>
+    <p>Ten minutes at the yard saves a lost day on site. Tick items off; this checklist remembers itself on this device until you reset it.</p>
+  </div>
+  <div class="progress"><span id="ckcount">0 / 0</span><div class="bar"><i id="ckbar"></i></div><button class="btn" id="ckreset" type="button" style="padding:6px 12px">Reset</button></div>
+  <div class="grid g2">
+    <div>
+      <h3 style="margin-bottom:10px">Tractor</h3>
+      <div class="check" id="ck-tractor">
+        <label><input type="checkbox" id="ck1"><span>Engine oil, coolant, hydraulic oil at marks<small>Hydraulic low = sluggish conveyors and augers = surging feed.</small></span></label>
+        <label><input type="checkbox" id="ck2"><span>Fuel full, water separator drained</span></label>
+        <label><input type="checkbox" id="ck3"><span>No hydraulic leaks under machine, hoses not chafed</span></label>
+        <label><input type="checkbox" id="ck4"><span>Track or tire condition and tension; drive chains greased</span></label>
+        <label><input type="checkbox" id="ck5"><span>Conveyor chains tensioned, slats intact, flow gates move freely</span></label>
+        <label><input type="checkbox" id="ck6"><span>Auger flights not worn past half the original width; kickback paddles present<small>Worn paddles cause centreline segregation and tearing.</small></span></label>
+        <label><input type="checkbox" id="ck7"><span>Feed sensors clean and aimed at the auger chamber</span></label>
+        <label><input type="checkbox" id="ck8"><span>Hopper wings cycle, no cold mix buildup in the corners</span></label>
+        <label><input type="checkbox" id="ck9"><span>Truck hitch rollers turn freely</span></label>
+        <label><input type="checkbox" id="ck10"><span>Lights, horn, backup alarm, fire extinguisher</span></label>
+      </div>
+    </div>
+    <div>
+      <h3 style="margin-bottom:10px">Screed</h3>
+      <div class="check" id="ck-screed">
+        <label><input type="checkbox" id="ck11"><span>Screed plates flat, no warping, no build-up of cold mix<small>Run a straightedge across the bottom. A warped plate drags and tears.</small></span></label>
+        <label><input type="checkbox" id="ck12"><span>Extension plates level with main plate and extension plugs connected</span></label>
+        <label><input type="checkbox" id="ck13"><span>Heat on: generator light and every zone light including extensions</span></label>
+        <label><input type="checkbox" id="ck14"><span>Thickness cranks and crown mechanism turn freely, greased</span></label>
+        <label><input type="checkbox" id="ck15"><span>Tow point actuators travel full range, both gauges read the same</span></label>
+        <label><input type="checkbox" id="ck16"><span>Tow arm pins and screed pivots have no slop<small>Play here shows up as ripples in the mat.</small></span></label>
+        <label><input type="checkbox" id="ck17"><span>End gates move freely, springs intact, wear shoes not gone</span></label>
+        <label><input type="checkbox" id="ck18"><span>Vibration runs, and runs evenly across the width</span></label>
+        <label><input type="checkbox" id="ck19"><span>Release agent on hopper, augers, screed plates and end gates (never diesel)</span></label>
+        <label><input type="checkbox" id="ck20"><span>Depth gauge, straightedge, temperature probe and lutes on board</span></label>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SETUP -->
+<section class="block" id="setup">
+  <div class="sec-head">
+    <div class="eyebrow">05 · Screed setup</div>
+    <h2>Legend HD setup sequence</h2>
+    <p>Do this in order, on level ground, with the screed hot. Skipping the levelling step is the root of most extension lines and edge tearing. It takes 15 minutes when done with the heat-up.</p>
+  </div>
+  <ol class="steps">
+    <li><div><b>Heat first</b><p>Screed heat on. Do not level or null a cold screed: the plates grow as they heat and the extension relationship changes. Wait until the plate is hot to a quick touch across its full length, usually 15–20 minutes.</p></div></li>
+    <li><div><b>Set width and balance the extensions</b><p>Run the extensions to the job width. If the width is not symmetrical, note it: unequal extensions put unequal push on the screed and it will steer and twist. Fit auger extensions and tunnel extensions when the auger ends are more than about 18 in from the end gate.</p></div></li>
+    <li><div><b>Level each extension to the main plate</b><p>Lay a 4 ft straightedge across the underside of the main plate and the extension. Adjust the extension height so the trailing (rear) edge is flush to 1/32–1/16 in higher than the main plate and the leading edge matches the main plate's angle. Check at the inner and outer end of each extension. Then set the extension slope to match the crown you will run.</p></div></li>
+    <li><div><b>Set pre-strike-off</b><p>Set the extension's pre-strike-off about 1/2 in above the plate for standard mixes. Lower it if the extension is being pushed up by material, raise it if the extension is starving.</p></div></li>
+    <li><div><b>Set crown</b><p>Lead crown 1/8 in above tail crown for most surface mixes (up to 3/16 in for coarse or stiff mixes). Set the tail crown to the road profile. Zero tail crown for parking lots unless the drainage design needs otherwise. Verify with a string line across the plate.</p></div></li>
+    <li><div><b>Set the starting blocks</b><p>Loose depth equals the compacted depth plus roll-down. Use 20–25 % or the 1/4 in per inch rule. For a 2 in compacted lift use 2.5 in blocks. Blocks under the main plate at both ends and under each extension. On a joint, the joint-side block sits on the cold mat.</p></div></li>
+    <li><div><b>Null the screed</b><p>Lower the screed onto the blocks in float. Turn each thickness crank until the plate sits flat on the blocks with no rock, then add a quarter to half turn of positive angle of attack. Confirm both tow point gauges read the same, roughly mid-travel, so you have adjustment both ways.</p></div></li>
+    <li><div><b>Set end gates</b><p>End gates on the surface with spring pressure holding them down. On the joint side, the end gate rides on top of the cold mat, not against its face. Confirm the gate is not lifting the screed.</p></div></li>
+    <li><div><b>Build the head and pull off</b><p>Charge the augers to the shaft centreline across the full width. Pull off at paving speed. Check depth at 10 ft with a depth gauge on both sides and in the centre. Small adjustment, then wait five tow-arm lengths before the next.</p></div></li>
+    <li><div><b>Read the first 100 ft</b><p>Look for an extension line, texture changes and edge condition. Fix them now with the extension height and slope adjusters, an eighth of a turn at a time. What you accept in the first 100 ft you accept in the whole lot.</p></div></li>
+  </ol>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="callout amber"><b>Roll-down reference.</b> 1 in compacted → 1.25 in loose · 1.5 in → 1.875 in · 2 in → 2.5 in · 3 in → 3.75 in · 4 in → 5 in. Tender or high-binder mixes roll down more; verify with a core or depth check on the first pull.</div>
+    <div class="callout info"><b>Minimum lift.</b> Lift thickness must be at least three times the top rock size for the screed and roller to work: 3/8 in mix ≥ 1.25 in, 1/2 in mix ≥ 1.5–2 in, 3/4 in mix ≥ 2.25–3 in. Thinner than this and you will tear the mat no matter how the screed is set.</div>
+  </div>
+</section>
+
+<!-- PAVING -->
+<section class="block" id="paving">
+  <div class="sec-head">
+    <div class="eyebrow">06 · Paving</div>
+    <h2>Running the pull</h2>
+    <p>The screed only prints a good mat when its three inputs are steady: head of material, speed and angle of attack. Every rule below protects one of those.</p>
+  </div>
+  <div class="grid g3">
+    <div class="card"><h3>Feed</h3><ul class="tight">
+      <li>Set sensors so augers run 85–90 % of the time at a slow speed. Continuous slow beats on-off fast every time.</li>
+      <li>Mix at the auger shaft centreline, all the way to the end gates. Half the auger flight visible is the picture to aim for.</li>
+      <li>Balance left and right conveyors so both sides of the head are equal. Uneven head steers the screed.</li>
+      <li>Never let the augers run empty and never bury them.</li>
+    </ul></div>
+    <div class="card"><h3>Speed</h3><ul class="tight">
+      <li>Set speed from plant delivery, not from how fast you can go. Use the <a href="#calc">calculator</a>.</li>
+      <li>Steady is everything. A speed change is a thickness change 30 ft later.</li>
+      <li>Do not stop for trucks. Slow down and stage trucks so the hopper is never empty. Stopping is a stop mark, restarting is a bump.</li>
+      <li>Rollers should not be forced to wait on the paver, nor the paver on the rollers.</li>
+    </ul></div>
+    <div class="card"><h3>Adjustments</h3><ul class="tight">
+      <li>One variable at a time, in small moves. A quarter turn on the crank, one tap on the tow point.</li>
+      <li>Wait 5 tow-arm lengths (30–50 ft) before judging or adjusting again.</li>
+      <li>Measure with a depth gauge on both sides and the centre before adjusting. Eyes lie on hot mix.</li>
+      <li>Do not adjust while stopped and do not adjust at restart.</li>
+    </ul></div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h3>Trucks</h3><ul class="tight">
+      <li>Truck stops 6–12 in short of the paver, in neutral, brakes off. The paver drives up and picks it up on the hitch.</li>
+      <li>Driver raises the bed in stages so the mix flows, not dumps. Keep the hopper one third to one half full.</li>
+      <li>Fold wings only with material in the hopper. Never fold on an empty hopper: the crust goes straight to the augers as a cold lump.</li>
+      <li>Probe every load. Below 250 °F, do not lay it as surface; below 275 °F watch for tearing on thin lifts.</li>
+      <li>Ask the plant to load trucks in three drops (front, back, middle) to limit coning and segregation.</li>
+    </ul></div>
+    <div class="card"><h3>Joints</h3><ul class="tight">
+      <li>Longitudinal: 1–1.5 in overlap onto the cold mat. Hot side 1/4 in per inch of depth higher for roll-down. End gate rides on top of the cold mat.</li>
+      <li>Do not broadcast the excess overlap onto the hot mat; lute it off or push it back to the joint only.</li>
+      <li>Roll the joint first from the hot side with a 6 in overlap onto the cold mat.</li>
+      <li>Transverse: start on a straight cut face, block the screed to the finished height of the cold mat plus roll-down, pull off at paving speed.</li>
+      <li>Tack every cold joint face and the whole lane before paving against it.</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- TROUBLESHOOT -->
+<section class="block" id="troubleshoot">
+  <div class="sec-head">
+    <div class="eyebrow">07 · Screed issues</div>
+    <h2>Read the mat, find the cause</h2>
+    <p>Filter by what you see or by where the problem lives. Each entry shows what the defect looks like, what it is telling you about the screed, the causes in order of likelihood, the fix and how to stop it coming back.</p>
+  </div>
+  <div class="search"><input id="q" type="search" placeholder="Search: tearing, ripples, edge, cold, joint…" aria-label="Search defects"></div>
+  <div class="filters" id="filters"></div>
+  <div class="defects" id="defects"></div>
+</section>
+
+<!-- DIAGNOSE -->
+<section class="block" id="diagnose">
+  <div class="sec-head">
+    <div class="eyebrow">08 · Diagnose</div>
+    <h2>Photo or video diagnosis</h2>
+    <p>Take a photo of the mat directly behind the screed, in daylight, with something for scale if you can (a lute handle, a boot). Or record 5–10 seconds of video panning across the mat and the auger chamber. Add what you know about the mix and the machine, and the manual will tell you what it sees, what it means and what to check first.</p>
+  </div>
+  <div class="diag">
+    <div>
+      <div class="drop" id="drop" tabindex="0" role="button" aria-label="Upload photo or video">
+        <b>Drop a photo or video here, or tap to choose</b><br><span id="dropnote">JPEG, PNG, WebP or a short video clip. Up to 4 frames are sent.</span>
+        <input type="file" id="file" accept="image/*,video/*" multiple hidden>
+      </div>
+      <div class="thumbs" id="thumbs"></div>
+      <div class="form">
+        <div class="frow">
+          <div class="field"><label for="f-where">Where is the defect</label><select id="f-where"><option>Full width</option><option>Centre of the mat</option><option>One outer edge</option><option>Both outer edges</option><option>Behind an extension</option><option>At the joint</option><option>At a stop / restart</option><option>Random patches</option></select></div>
+          <div class="field"><label for="f-when">When it started</label><select id="f-when"><option>First pull of the day</option><option>After a truck change</option><option>After a stop</option><option>After changing width</option><option>After a depth or crown change</option><option>Gradually over the pull</option><option>Been there all day</option></select></div>
+        </div>
+        <div class="frow">
+          <div class="field"><label for="f-temp">Mix temp at truck (°F)</label><input id="f-temp" inputmode="numeric" placeholder="e.g. 290"></div>
+          <div class="field"><label for="f-depth">Compacted depth (in)</label><input id="f-depth" inputmode="decimal" placeholder="e.g. 2"></div>
+        </div>
+        <div class="frow">
+          <div class="field"><label for="f-mix">Mix</label><input id="f-mix" placeholder="e.g. 1/2 in surface, PG 64-28"></div>
+          <div class="field"><label for="f-width">Paving width (ft)</label><input id="f-width" inputmode="decimal" placeholder="e.g. 12"></div>
+        </div>
+        <div class="field"><label for="f-notes">What changed, what you've tried, anything else</label><textarea id="f-notes" placeholder="Screed heat has been on 25 min. Extension plugged in. Augers cycling on and off. Roller marks won't roll out…"></textarea></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn primary" id="go" type="button">Diagnose</button>
+          <button class="btn" id="stop" type="button" hidden>Stop</button>
+          <button class="btn" id="clear" type="button">Clear</button>
+        </div>
+        <div id="diag-unavail" class="unavail" hidden>Photo and video diagnosis runs on Claude and needs this page to be opened inside claude.ai. The written troubleshooting guide above works everywhere.</div>
+      </div>
+    </div>
+    <div class="result" id="result"></div>
+  </div>
+</section>
+
+<!-- ASK -->
+<section class="block" id="ask">
+  <div class="sec-head">
+    <div class="eyebrow">09 · Ask</div>
+    <h2>Ask the manual</h2>
+    <p>Plain-language questions about setup, adjustments, numbers or what a control does. Answers come from this manual's content and general paving practice; anything about your specific unit's wiring, hydraulics or warranty goes to the LeeBoy dealer.</p>
+  </div>
+  <div class="chat" id="chat">
+    <div class="sugg" id="sugg"></div>
+    <div class="log" id="log"></div>
+    <form id="askform"><input id="askin" placeholder="How do I set the extension height on a 12 ft pull?" aria-label="Question"><button class="btn primary" type="submit" id="askbtn">Ask</button></form>
+    <div id="ask-unavail" class="unavail" hidden>Ask the manual runs on Claude and needs this page to be opened inside claude.ai.</div>
+  </div>
+</section>
+
+<!-- CALC -->
+<section class="block" id="calc">
+  <div class="sec-head">
+    <div class="eyebrow">10 · Calculators</div>
+    <h2>Speed and tonnage</h2>
+    <p>Based on 110 lb per square yard per inch of compacted hot mix (12.2 lb per square foot per inch). Adjust the unit weight for your mix design if the plant gives you a different figure.</p>
+  </div>
+  <div class="grid g2">
+    <div class="calc">
+      <h3>Paving speed to match the plant</h3>
+      <div class="frow">
+        <div class="field"><label for="c-tph">Plant delivery (tons / hr)</label><input id="c-tph" inputmode="decimal" value="120"></div>
+        <div class="field"><label for="c-w">Paving width (ft)</label><input id="c-w" inputmode="decimal" value="12"></div>
+      </div>
+      <div class="frow">
+        <div class="field"><label for="c-d">Compacted depth (in)</label><input id="c-d" inputmode="decimal" value="2"></div>
+        <div class="field"><label for="c-uw">Unit weight (lb / sq yd / in)</label><input id="c-uw" inputmode="decimal" value="110"></div>
+      </div>
+      <div class="out"><small>SET PAVING SPEED TO</small><b id="c-fpm">—</b><small id="c-fpm2"></small></div>
+    </div>
+    <div class="calc">
+      <h3>Tons needed for the area</h3>
+      <div class="frow">
+        <div class="field"><label for="t-l">Length (ft)</label><input id="t-l" inputmode="decimal" value="300"></div>
+        <div class="field"><label for="t-w">Width (ft)</label><input id="t-w" inputmode="decimal" value="60"></div>
+      </div>
+      <div class="frow">
+        <div class="field"><label for="t-d">Compacted depth (in)</label><input id="t-d" inputmode="decimal" value="2"></div>
+        <div class="field"><label for="t-waste">Waste / yield allowance (%)</label><input id="t-waste" inputmode="decimal" value="5"></div>
+      </div>
+      <div class="out"><small>ORDER</small><b id="t-tons">—</b><small id="t-tons2"></small></div>
+    </div>
+  </div>
+</section>
+
+<!-- MAINTENANCE -->
+<section class="block" id="maint">
+  <div class="sec-head">
+    <div class="eyebrow">11 · Shutdown and maintenance</div>
+    <h2>End of day and service intervals</h2>
+    <p>Cold mix left on a screed is tomorrow's tearing. Cleaning is part of paving, not an extra.</p>
+  </div>
+  <div class="grid g2">
+    <div class="card"><h3>Shutdown and cleaning</h3>
+      <ol class="tight" style="padding-left:18px;display:grid;gap:6px;margin:8px 0 0">
+        <li>Run the hopper, conveyors and augers empty on the last pull. Fold wings to clear the corners.</li>
+        <li>Raise the screed, lock it, and while everything is still hot scrape the plates, end gates, auger flights and tunnel.</li>
+        <li>Spray an approved release agent on all mix-contact surfaces. Never diesel: it softens the binder and shows up as fat spots on the next job.</li>
+        <li>Turn off screed heat and let the generator cool, then shut down the engine with a short idle for the turbo.</li>
+        <li>Note hours, any leaks, and any control that felt loose or slow. Report it the same day.</li>
+      </ol></div>
+    <div class="tbl"><table style="min-width:0">
+      <thead><tr><th>Interval</th><th>Do</th></tr></thead>
+      <tbody>
+        <tr><td class="num">Daily</td><td>Grease all fittings on screed, tow arms, conveyor and augers. Check fluids. Inspect plates and paddles. Clean sensors.</td></tr>
+        <tr><td class="num">Weekly</td><td>Conveyor chain tension. Auger flight and kickback paddle wear. Screed plate flatness with a straightedge. Extension heat continuity. Tow point actuator travel.</td></tr>
+        <tr><td class="num">50 hr</td><td>Engine oil and filter on a new machine's first service, then per the Kubota schedule. Hydraulic return filter indicator.</td></tr>
+        <tr><td class="num">250 hr</td><td>Engine oil and filter. Fuel filters. Hydraulic filter. Track or wheel drive oil level. Generator belt and brushes.</td></tr>
+        <tr><td class="num">500 hr</td><td>Hydraulic oil sample or change per manual. Conveyor and auger bearings. Screed plate and extension plate replacement when worn thin or wavy.</td></tr>
+        <tr><td class="num">1000 hr</td><td>Full hydraulic service, coolant, DPF check, tow arm and screed pivot pins and bushings.</td></tr>
+      </tbody></table></div>
+  </div>
+</section>
+
+<!-- SAFETY -->
+<section class="block" id="safety">
+  <div class="sec-head">
+    <div class="eyebrow">12 · Safety</div>
+    <h2>Non-negotiables</h2>
+  </div>
+  <div class="grid g3">
+    <div class="callout warn"><b>Hot mix and hot steel.</b> Mix at 300 °F and screed plates hotter. Gloves, long sleeves, boots. Never reach into the auger chamber or under the screed while the engine runs.</div>
+    <div class="callout warn"><b>Pinch and crush.</b> Hopper wings, extensions and the screed lift can crush a person. Nobody between truck and paver during hitch-up. Lock the screed before working under it.</div>
+    <div class="callout warn"><b>Electric screed.</b> The generator produces lethal voltage. Heat off and engine off before touching elements, plugs or junction boxes. Wet plugs are a shock hazard.</div>
+    <div class="callout warn"><b>Trucks.</b> Ground guide at every back-up. Truck in neutral on the hitch. Never stand behind a reversing truck to signal it.</div>
+    <div class="callout warn"><b>Traffic.</b> High-visibility clothing, a traffic plan, and spotters on any lot open to the public. A paver in reverse cannot see behind it.</div>
+    <div class="callout warn"><b>Transport.</b> Screed raised and locked, extensions in, hopper wings up and pinned. Tie-downs at the manufacturer's points only.</div>
+  </div>
+</section>
+
+<footer>
+  <div>JB Lines internal operator's manual for the LeeBoy 8520 series. Not a LeeBoy publication. Specifications summarized from published manufacturer literature for the 8520B and 8520C; confirm against the serial plate and the printed Safety and Operation Manual for your unit.</div>
+  <div>Mat defect guidance follows standard hot-mix asphalt practice (state DOT mat problem guides and paving industry references). Photo and video diagnosis is decision support, not a replacement for a depth gauge, a thermometer and an experienced screed hand.</div>
+</footer>
+</div>
+
+<script>
+/* ---------------- Defect knowledge base ---------------- */
+const DEFECTS = [
+{id:"tear-full",name:"Full-width tearing",group:"Surface",sev:"high",sketch:"scuff",
+ sub:"Whole mat torn, dragged, fines pulled off",
+ looks:"Ragged, open texture across the entire width. Fine material is pulled off the surface, leaving coarse rock exposed. Often a dull, dry look. Drag marks run in the direction of travel.",
+ means:"The screed plate is dragging the mix instead of gliding over it. The plate is cold, the mix is cold, the lift is too thin for the rock size, or the plate itself is worn or warped.",
+ causes:[
+  ["Screed plate not up to temperature","Most common at the first pull of the day and after a long wait. Touch test the plate along its length. Check all heat zone lights."],
+  ["Mix temperature low","Probe the truck. Under 275 °F on a thin lift will tear; under 250 °F will tear on almost anything."],
+  ["Lift too thin for the aggregate size","Compacted thickness should be at least three times the top rock size. A 3/4 in mix at 1.5 in will tear."],
+  ["Worn, warped or built-up screed plate","Straightedge the plate. Hardened mix or a wave in the plate drags."],
+  ["Excessive angle of attack or paving too fast","The nose is up and the tail is scraping. Also happens when speed is too high for the feed."]],
+ fixes:["Stop. Heat the screed 15–20 minutes until the plate is hot to a quick touch end to end, including extensions.","Probe the mix. If it is under 250 °F do not lay it as surface. Ask the plant to raise the temperature or shorten the haul.","Increase lift thickness or switch to a finer mix if the lift cannot be thickened.","Scrape or replace plates; a warped plate cannot be tuned around.","Reduce angle of attack a quarter turn and slow down."],
+ prevent:["Heat on the moment the engine starts. Heat stays on during waits.","Log every load temperature.","Straightedge the plates weekly."]},
+{id:"tear-center",name:"Centreline tearing",group:"Surface",sev:"high",sketch:"center",
+ sub:"Torn strip 6–18 in wide down the middle",
+ looks:"A torn, coarse, open strip running down the centre of the mat behind the auger gearbox, with the rest of the mat looking fine.",
+ means:"The centre of the screed is starved or fed segregated mix. Either the crown is set wrong so the centre plate is low, the kickback paddles are not moving mix under the gearbox, or the centre plate is cold or worn.",
+ causes:[
+  ["Lead crown set too low relative to tail crown","String line the plate. Lead crown should be about 1/8 in above the tail crown so mix flows to the centre."],
+  ["Kickback paddles worn or missing","Look at the inner end of each auger. Paddles push mix under the gearbox; without them the centre starves."],
+  ["Head of material too low","The centre is the first place to starve when the augers run short."],
+  ["Centre plate worn or cold","Compare heat zone lights; check the centre of the plate for wear."],
+  ["Mix segregating down the centre from the hopper","Coarse rock rolls to the middle of the conveyor when the hopper is run empty."]],
+ fixes:["Set lead crown 1/8 in (up to 3/16 in for coarse mixes) above the tail crown.","Replace the kickback paddles or reverse-flight sections.","Raise the head of material and run augers slower and longer.","Keep the hopper at least one third full; never fold wings on an empty hopper."],
+ prevent:["Check paddles weekly.","Set crown as part of the daily setup, not when the problem shows."]},
+{id:"tear-edge",name:"Outer edge or extension tearing",group:"Surface",sev:"high",sketch:"edge",
+ sub:"Tearing in the outer 1–3 ft, behind the extensions",
+ looks:"Torn, scuffed strip along one or both outer edges directly behind the extensions, main mat fine.",
+ means:"The extension is running cold, is set low at the trailing edge so it drags, has the wrong slope, or is starving because the augers do not reach it.",
+ causes:[
+  ["Extension not heating","Extension plug not connected, element or breaker out. The extension zone light will be off."],
+  ["Extension trailing edge below the main plate","Straightedge across main plate and extension. Rear edge should be flush to 1/16 in high, not low."],
+  ["Extension slope or angle of attack wrong","Leading edge digging in, or the extension tilted opposite to the crown."],
+  ["Auger extensions not fitted for the width","If the auger ends are more than about 18 in from the end gate, the outside starves and segregates."],
+  ["Extension plate worn or built up with cold mix","Extensions see the most abuse and are cleaned the least."]],
+ fixes:["Check the extension plug and zone light. Fix heat before touching adjustment.","Re-level the extension to the main plate with a straightedge; set the rear edge flush to a hair high.","Set the extension slope to match the main plate crown.","Fit auger and tunnel extensions.","Clean or replace the extension plate."],
+ prevent:["Plug in and heat-check extensions every morning.","Re-level extensions after every width change."]},
+{id:"stop-mark",name:"Screed mark (stop and restart mark)",group:"Screed setup",sev:"medium",sketch:"stopmark",
+ sub:"Ridge or dip across the full width where the paver stopped",
+ looks:"A transverse depression or a ridge across the full width, at the spot where the paver stopped. Sometimes a low mark where the screed settled and a bump just after it where the screed climbed on restart.",
+ means:"The screed sank while the paver was stopped (vibration left on, low head, screed settling) or was pushed up on restart (adjustment made while stopped, truck bump, surge of material).",
+ causes:[
+  ["Stopped with the vibration still running","Vibration settles the screed into the mat within seconds."],
+  ["Stopped with a low head of material","The screed loses support and drops as the mix cools."],
+  ["Thickness adjusted while stopped or at restart","Any adjustment at a standstill prints as a step."],
+  ["Truck bumped the paver","A hard hit pushes the screed forward and up."],
+  ["Restarted slowly then sped up","Speed change equals thickness change."]],
+ fixes:["If a mark is already there: rake or lute the ridge into the low, then get the breakdown roller on it immediately while it is hot.","For the rest of the pull: stop with a full head, augers off, vibration off, screed left down. Restart at paving speed with no adjustment."],
+ prevent:["Stage trucks so you slow instead of stop.","Truck hitch always engaged; trucks in neutral."]},
+{id:"ripples",name:"Ripples (short waves, washboard)",group:"Feed",sev:"medium",sketch:"ripples",
+ sub:"Regular waves 1–3 ft apart across the mat",
+ looks:"Small, closely spaced transverse waves the whole way across, about 1–3 ft apart, visible when sighting down the mat and felt on the roller.",
+ means:"The screed is bobbing. Its support is fluctuating, almost always a surging head of material from feed cycling on and off, sometimes mechanical play in the tow arms or screed pivots.",
+ causes:[
+  ["Augers and conveyors cycling on and off","Watch the auger chamber. If the mix level rises and falls with the auger switch, that is it. Sensors set too high or feed speed too fast."],
+  ["Play in tow point pins, tow arms or screed pivots","Grab the screed and rock it with the engine off. Any knock is a wave later."],
+  ["Excessive angle of attack","A screed riding nose-high oscillates."],
+  ["Vibration too high for the mix or the depth","Especially on thin lifts."],
+  ["Mix tender or paver speed too high for the feed",""]],
+ fixes:["Set feed so augers run continuously 85–90 % of the time at a slow speed, with mix at the shaft centreline. Adjust the sensors and the conveyor to auger ratio.","Tighten or replace worn pins and bushings.","Reduce angle of attack a quarter turn; slow the paver.","Reduce vibration frequency."],
+ prevent:["Feed sensors checked daily.","Pins and bushings on the weekly inspection."]},
+{id:"waves-long",name:"Long waves and bumps",group:"Screed setup",sev:"medium",sketch:"wave",
+ sub:"Undulations 10–40 ft apart you feel driving",
+ looks:"Long, smooth undulations, seen by sighting down the mat or felt in a vehicle, repeating every one to three paver lengths.",
+ means:"The screed is being steered up and down by the operator or the tractor: thickness over-correction, speed changes, truck exchanges, or the grade reference following the base.",
+ causes:[
+  ["Over-correcting thickness","Big moves, or a second move before the first settled. Each correction becomes a wave."],
+  ["Paver speed changing","Slowing for trucks, then speeding up."],
+  ["Truck exchange","Bumps, brakes on, or the hopper running low at each truck."],
+  ["Grade sensor on a short ski or a bad reference","The screed copies whatever the ski rides on."],
+  ["Soft or wavy base","The tractor pitches, the tow points pitch, the screed follows."]],
+ fixes:["Small adjustments only, then wait five tow-arm lengths.","Hold one speed for the whole pull.","Hitch every truck; trucks in neutral, brakes off.","Use a long ski or sonic averaging reference; string line if the base is bad."],
+ prevent:["Two operators agree who adjusts. One at a time."]},
+{id:"auger-shadow",name:"Auger shadows",group:"Feed",sev:"medium",sketch:"shadows",
+ sub:"Faint transverse lines matching the auger cycling",
+ looks:"Regularly spaced light and dark transverse bands or faint ridges across the mat. Spacing matches the on-off cycle of the augers.",
+ means:"The augers are being buried and then unburied. When mix piles above the augers the screed feels the extra pressure and lifts a fraction; when the level drops it settles. The shadow is that pressure change.",
+ causes:[
+  ["Feed sensors set too high, augers buried","Mix should be at the shaft centreline, not over the flights."],
+  ["Augers cycling on and off instead of running continuously","Set for continuous slow running."],
+  ["Auger speed too high","Fast augers throw mix over themselves."],
+  ["Conveyor dumping into a full chamber","Conveyor to auger ratio off."]],
+ fixes:["Lower the feed sensor target so mix sits at the auger shaft centreline.","Slow the augers and run them continuously.","Balance conveyor delivery to auger consumption."],
+ prevent:["Watch the auger chamber for the first 100 ft of every pull."]},
+{id:"seg-center",name:"Centreline segregation",group:"Feed",sev:"high",sketch:"center",
+ sub:"Coarse, rocky strip 12–24 in wide down the middle",
+ looks:"An open, rocky, dull strip down the centre of the mat behind the auger gearbox. Fines missing, large rock visible. It will ravel within a season.",
+ means:"Coarse aggregate is collecting at the gearbox. The kickback paddles are not feeding under it, the augers are throwing coarse rock to the centre, or the mix arrived segregated from the hopper or truck.",
+ causes:[
+  ["Kickback paddles worn or missing","The single most common cause on conveyor pavers."],
+  ["Augers running too fast","Coarse rock rolls off the flights toward the gearbox."],
+  ["Hopper run empty or wings folded on an empty hopper","Coarse rock from the wings and corners drops straight onto the conveyors."],
+  ["Truck loaded in one drop","Coning in the bed separates the rock before it reaches you."]],
+ fixes:["Replace paddles or reverse-flight sections.","Slow the augers; keep the head steady.","Keep the hopper at least one third full; fold wings only with material in the hopper.","Ask the plant to load in three drops."],
+ prevent:["Paddles on the weekly inspection.","Never run the hopper dry between trucks."]},
+{id:"seg-edge",name:"Edge and end-of-load segregation",group:"Feed",sev:"high",sketch:"edge",
+ sub:"Rocky patches at the outer edges, or repeating every truck",
+ looks:"Coarse, open patches along the outer edges, or patches that repeat at the same interval as each truck load.",
+ means:"Coarse rock is rolling to the outside of the auger chamber and not being remixed, or every truck change is sending a slug of segregated or crusted mix through the machine.",
+ causes:[
+  ["Auger ends too far from the end gate","Fit auger extensions when the gap exceeds about 18 in."],
+  ["Augers too fast with a low head","Coarse rock outruns the fines to the outside."],
+  ["Wings folded with the hopper empty","End-of-load patches: the wing dump goes straight through."],
+  ["Trucks loaded in one drop, or long hauls without tarps",""]],
+ fixes:["Fit auger and tunnel extensions.","Slow augers, run continuously, hold the head at the shaft centreline.","Fold wings only with the hopper one third full.","Three-drop loading and tarped trucks."],
+ prevent:["Match auger length to paving width before the first truck."]},
+{id:"seg-temp",name:"Temperature segregation (cold lumps)",group:"Feed",sev:"medium",sketch:"patches",
+ sub:"Dull, cooler patches that repeat each truck",
+ looks:"Irregular dull patches with a slightly different colour and a more open texture, often at truck-change intervals. An infrared thermometer shows them 25–50 °F cooler than the surrounding mat.",
+ means:"Cold crust from the truck bed is going through the paver as lumps. It will not compact and will ravel or pothole first.",
+ causes:[
+  ["Uncovered or slow trucks","Crust forms on the top and sides of every load."],
+  ["Wings folded on an empty hopper","The crust from the wings goes straight to the augers."],
+  ["Mix held in the hopper during long waits",""]],
+ fixes:["Tarp every load. Shorten the truck cycle.","Fold wings only when the hopper has mix to blend the crust into.","Shovel out any lumps that reach the augers.","Where available, use a material transfer vehicle or remixing hopper insert."],
+ prevent:["Infrared gun on the mat behind the screed at every truck change."]},
+{id:"checking",name:"Checking (short transverse cracks)",group:"Rolling",sev:"medium",sketch:"hairlines",
+ sub:"Hairline cracks 1–3 in long after the breakdown roller",
+ looks:"Short transverse hairline cracks, 1–3 in long and a few inches apart, appearing behind the breakdown roller, not behind the screed.",
+ means:"The mat is moving under the roller. The mix is tender at that temperature, the lift is thin, the roller is too heavy or reversing hard, or the screed is not giving enough pre-compaction.",
+ causes:[
+  ["Mix in its tender zone or too hot","Many mixes are tender around 240–280 °F. Rolling in that window checks the mat."],
+  ["Moisture in the mix","Steam behind the screed and a tender mat."],
+  ["Roller too heavy or reversing too hard on a thin lift",""],
+  ["Screed vibration off, low pre-compaction","The screed should hand the roller a mat at 75–85 % density."],
+  ["Lift too thin",""]],
+ fixes:["Roll immediately behind the screed while the mat is above the tender zone, or wait until it cools below it; do not roll inside it.","Turn screed vibration on.","Lighten the roller or use static passes for breakdown.","Tell the plant: moisture or binder content."],
+ prevent:["Know your mix's tender window; probe the mat, not the air."]},
+{id:"shoving",name:"Shoving and tender mat",group:"Rolling",sev:"medium",sketch:"wave",
+ sub:"Mat moves ahead of the roller, marks won't roll out",
+ looks:"A wave pushes ahead of the roller drum, roller marks stay, the mat feels spongy underfoot.",
+ means:"The mix has no stability at that temperature. Usually the mix design or plant, sometimes excess tack coat or moisture, rarely a screed problem.",
+ causes:[
+  ["High binder content or rounded aggregate","Plant issue. Document it."],
+  ["Mix too hot",""],
+  ["Excess or unbroken tack coat","Tack should be broken (tacky, not wet) before paving."],
+  ["Moisture in the mix",""]],
+  fixes:["Let the mat cool before further rolling; static passes only.","Reduce tack application.","Contact the plant with temperatures and photos."],
+ prevent:["Check tack has broken before the paver rolls onto it."]},
+{id:"fat-spots",name:"Fat spots and bleeding",group:"Mix",sev:"low",sketch:"dots",
+ sub:"Shiny black spots or streaks",
+ looks:"Glossy black patches or streaks on an otherwise normal mat.",
+ means:"Excess binder or moisture in the mix at those spots, or contamination from truck bed release agent. Not a screed setting.",
+ causes:[
+  ["Diesel used as a release agent in truck beds","Diesel dissolves the binder and floats it to the surface."],
+  ["Moisture in the aggregate","Steam and fat spots together point to the plant."],
+  ["Binder content high",""],
+  ["Screed heat run too hot, cooking the binder on the plate",""]],
+ fixes:["Ban diesel; approved release agents only.","Report to the plant with photos and load numbers.","Turn heat down once the screed is at temperature."],
+ prevent:["Check truck beds at the plant."]},
+{id:"texture",name:"Non-uniform texture",group:"Surface",sev:"medium",sketch:"patches",
+ sub:"Random open and tight patches",
+ looks:"Areas of open, coarse texture next to areas of tight, smooth texture with no pattern.",
+ means:"Inconsistent support or heat under the screed: fluctuating head of material, uneven screed heat, vibration not uniform, or a worn plate section.",
+ causes:[
+  ["Head of material varying","Watch the auger chamber for level changes."],
+  ["Cold spots on the plate","A failed element or a section of built-up mix."],
+  ["Vibration uneven or intermittent",""],
+  ["Worn plate sections",""],
+  ["Mix temperature varying between loads",""]],
+ fixes:["Stabilise the feed first.","Check every heat zone and clean the plate.","Confirm vibration runs evenly across the width.","Replace worn plate sections."],
+ prevent:["Uniform texture is the first thing to check on every pull; it is the earliest warning."]},
+{id:"ext-line",name:"Extension line or step",group:"Screed setup",sev:"medium",sketch:"longline",
+ sub:"A longitudinal line, ridge or drop where the extension meets the main screed",
+ looks:"A visible line running the length of the mat at the extension joint. Sometimes a ridge of pushed material, sometimes a step down, sometimes just a texture change.",
+ means:"The extension trailing edge is not level with the main plate, or its slope or angle of attack differs, so the two plates are printing at different heights.",
+ causes:[
+  ["Extension height set wrong","Rear edge should be flush to 1/32–1/16 in above the main plate. Low drags, high leaves a step."],
+  ["Extension slope not matching the crown",""],
+  ["Extension leading edge too low, digging in",""],
+  ["Extension not heated or plate worn",""],
+  ["Levelled cold, then the plates grew with heat",""]],
+ fixes:["Level the extension to the main plate with a straightedge, screed hot.","Fine tune while paving with the extension height adjuster, an eighth of a turn at a time, waiting five tow-arm lengths.","Match the extension slope to the crown.","Confirm extension heat."],
+ prevent:["Re-level after every width change and every morning, hot."]},
+{id:"edge-slump",name:"Edge slump or ragged edge",group:"Edges",sev:"low",sketch:"slump",
+ sub:"Edge rolls over, crumbles or wanders",
+ looks:"The outside edge is not vertical and clean: it slumps, breaks away, or wanders in and out.",
+ means:"The end gate is not riding the grade with pressure, the outside is starved, or the edge shoe is set wrong. Wander alone is steering.",
+ causes:[
+  ["End gate riding high, not on grade","Should be down with spring pressure."],
+  ["End gate worn, hung up or spring gone",""],
+  ["Low material at the auger ends",""],
+  ["Steering corrections too large",""]],
+ fixes:["Set the end gate on the surface with spring pressure.","Fit an edger shoe for a bevelled, compacted edge.","Add auger extensions; hold the head to the gates.","Small steering inputs; sight a string line."],
+ prevent:["End gate springs and shoes on the weekly check."]},
+{id:"thick-drift",name:"Thickness drifting",group:"Screed setup",sev:"medium",sketch:"wedge",
+ sub:"Depth changes without anyone adjusting",
+ looks:"Depth gauge readings creep thicker or thinner over a pull with no crank input, or one side runs different from the other.",
+ means:"The screed has not reached equilibrium or something is moving its inputs: the head of material, the speed, the tow point actuators creeping, mix temperature, or the grade reference.",
+ causes:[
+  ["Head of material changing","Number one cause. More head lifts the screed, less drops it."],
+  ["Paver speed changing",""],
+  ["Tow point actuators unequal or creeping","Compare the two gauges."],
+  ["Mix temperature changing between loads","Hotter mix, screed settles thinner."],
+  ["Grade sensor bouncing on a bad reference",""],
+  ["Worn plates on one side",""]],
+ fixes:["Stabilise the feed and hold speed before touching the cranks.","Match the tow point gauges.","Adjust in quarter turns and wait five tow-arm lengths.","Set the grade sensor on a solid reference or go manual."],
+ prevent:["Depth gauge both sides every 50 ft on the first pull, every 100 ft after."]},
+{id:"heat",name:"Screed not heating or cold zones",group:"Heat",sev:"high",sketch:"heat",
+ sub:"Zone light off, plate cold after 20 minutes",
+ looks:"A heat zone indicator stays off, one section of the plate stays cool to the touch, or tearing appears in one zone only.",
+ means:"An electrical fault in that zone: generator not producing, breaker tripped, extension unplugged, a burnt-out element or a failed controller.",
+ causes:[
+  ["Extension not plugged in","Check first. It is the most common."],
+  ["Breaker tripped","Locate the screed panel breakers; reset once. If it trips again, there is a short or a failed element."],
+  ["Generator not engaged or belt slipping","No generator light means nothing heats."],
+  ["Element burnt out","Continuity test with the power off."],
+  ["Thermostat or controller failed",""]],
+ fixes:["Engine off, heat off, then check plugs and breakers.","Test element continuity; replace the element.","Generator belt tension and brushes.","If a zone cannot be repaired on site, shift the extension in and pave narrower rather than run a cold zone."],
+ prevent:["Zone lights checked as part of the daily inspection."]},
+{id:"roller-marks",name:"Roller marks and indentations",group:"Rolling",sev:"low",sketch:"longline",
+ sub:"Drum edge lines or dents that don't finish out",
+ looks:"Straight longitudinal drum edge lines, dents where a roller stopped, or scuffs where it turned.",
+ means:"Rolling while the mat is tender, stopping or turning on the hot mat, or finish rolling skipped.",
+ causes:[
+  ["Roller stopped or turned on the hot mat",""],
+  ["Breakdown too early on a tender mix",""],
+  ["Finish rolling missed or done too cold","Finish roll while the mat is still above about 175 °F."]],
+ fixes:["Stop at a slight angle, off the fresh mat where possible; never park on it.","Adjust the rolling pattern to the mix's tender window.","Finish roll static while the mat is still warm."],
+ prevent:["Rolling pattern agreed before the first pull."]},
+{id:"joint",name:"Poor longitudinal joint",group:"Joints",sev:"medium",sketch:"joint",
+ sub:"Joint open, low, or a ridge",
+ looks:"A visible seam that is either lower than the two mats, open and raveling, or has a ridge of overlapped material.",
+ means:"Overlap and joint height were wrong, the excess was broadcast onto the hot mat, or the cold face was not prepared.",
+ causes:[
+  ["Overlap too wide","More than 1.5 in leaves a ridge that rolls out into a bump."],
+  ["Overlap too narrow or the end gate against the cold face","Leaves an open, low seam."],
+  ["Hot side not set high enough for roll-down","1/4 in per inch of depth above the cold mat."],
+  ["Excess luted across the hot mat","Creates a coarse band beside the joint."],
+  ["Cold joint face not tacked or cleaned",""]],
+ fixes:["1–1.5 in overlap, end gate on top of the cold mat.","Set the joint-side thickness for roll-down.","Push excess back onto the joint only, or remove it.","Roll the joint first from the hot side with a 6 in overlap.","Tack the cold face."],
+ prevent:["Cut and tack the cold joint before the paver arrives."]}
+];
+
+const GROUPS = ["All","Surface","Feed","Screed setup","Heat","Edges","Joints","Rolling","Mix"];
+
+/* ---------------- Sketches ---------------- */
+function sketch(kind){
+  const W=160,H=90; const base=`<rect width="${W}" height="${H}" fill="#2B2E33"/>`;
+  const grain=`<rect width="${W}" height="${H}" fill="url(#g)" opacity=".35"/>`;
+  const defs=`<defs><pattern id="g" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r=".9" fill="#7C8188"/><circle cx="4.5" cy="4.5" r=".7" fill="#5C6169"/></pattern></defs>`;
+  let o="";
+  const hi="#9BA1A9", lo="#15171A", warn="#FF8C4B";
+  switch(kind){
+    case "scuff": for(let i=0;i<60;i++){const x=Math.random()*W,y=Math.random()*H,l=6+Math.random()*14;o+=`<line x1="${x}" y1="${y}" x2="${x}" y2="${y+l}" stroke="${hi}" stroke-width="1.2" opacity=".8"/>`;} break;
+    case "center": o+=`<rect x="62" y="0" width="36" height="${H}" fill="#3F434A"/>`; for(let i=0;i<40;i++){const x=64+Math.random()*32,y=Math.random()*H;o+=`<circle cx="${x}" cy="${y}" r="${1.5+Math.random()*1.5}" fill="${hi}"/>`;} break;
+    case "edge": o+=`<rect x="0" y="0" width="22" height="${H}" fill="#3F434A"/><rect x="${W-22}" y="0" width="22" height="${H}" fill="#3F434A"/>`; for(let i=0;i<40;i++){const s=i%2?0:W-22;const x=s+Math.random()*22,y=Math.random()*H;o+=`<circle cx="${x}" cy="${y}" r="${1.3+Math.random()*1.5}" fill="${hi}"/>`;} break;
+    case "stopmark": o+=`<rect x="0" y="40" width="${W}" height="6" fill="${lo}"/><rect x="0" y="46" width="${W}" height="4" fill="#4A4E55"/>`; break;
+    case "ripples": for(let y=6;y<H;y+=10){o+=`<rect x="0" y="${y}" width="${W}" height="2.5" fill="${lo}" opacity=".9"/><rect x="0" y="${y+3}" width="${W}" height="1.5" fill="#4A4E55"/>`;} break;
+    case "wave": o+=`<path d="M0 45 Q 40 20 80 45 T 160 45" stroke="${lo}" stroke-width="10" fill="none" opacity=".9"/><path d="M0 45 Q 40 20 80 45 T 160 45" stroke="#4A4E55" stroke-width="3" fill="none"/>`; break;
+    case "shadows": for(let y=10;y<H;y+=20){o+=`<rect x="0" y="${y}" width="${W}" height="7" fill="${lo}" opacity=".55"/>`;} break;
+    case "patches": for(let i=0;i<5;i++){const x=Math.random()*(W-40),y=Math.random()*(H-30);o+=`<ellipse cx="${x+20}" cy="${y+15}" rx="${16+Math.random()*10}" ry="${10+Math.random()*6}" fill="#3F434A"/>`; for(let j=0;j<10;j++){o+=`<circle cx="${x+6+Math.random()*28}" cy="${y+4+Math.random()*22}" r="1.3" fill="${hi}"/>`;}} break;
+    case "hairlines": for(let y=8;y<H;y+=9){for(let x=8;x<W;x+=22){const dx=Math.random()*8;o+=`<line x1="${x+dx}" y1="${y}" x2="${x+dx+10}" y2="${y}" stroke="${lo}" stroke-width="1.6"/>`;}} break;
+    case "dots": for(let i=0;i<7;i++){const x=Math.random()*W,y=Math.random()*H;o+=`<ellipse cx="${x}" cy="${y}" rx="${6+Math.random()*8}" ry="${4+Math.random()*4}" fill="#0B0C0E"/><ellipse cx="${x-2}" cy="${y-1}" rx="3" ry="1.5" fill="#3A3D44"/>`;} break;
+    case "longline": o+=`<rect x="108" y="0" width="3" height="${H}" fill="${lo}"/><rect x="111" y="0" width="2" height="${H}" fill="#4A4E55"/><rect x="113" y="0" width="47" height="${H}" fill="#33373C" opacity=".8"/>`; break;
+    case "joint": o+=`<rect x="0" y="0" width="70" height="${H}" fill="#474B52"/><rect x="66" y="0" width="8" height="${H}" fill="${lo}"/>`; break;
+    case "slump": o+=`<path d="M${W-18} 0 q -8 15 0 30 q 8 15 -2 30 q -6 15 4 30 L ${W} ${H} L ${W} 0 Z" fill="#111317"/>`; for(let i=0;i<14;i++){o+=`<circle cx="${W-20+Math.random()*8}" cy="${Math.random()*H}" r="1.4" fill="${hi}"/>`;} break;
+    case "wedge": o+=`<polygon points="0,${H} ${W},${H} ${W},20 0,60" fill="#3A3E45"/><line x1="0" y1="60" x2="${W}" y2="20" stroke="${hi}" stroke-width="1.5" stroke-dasharray="4 3"/>`; break;
+    case "heat": o+=`<rect x="0" y="0" width="${W}" height="${H}" fill="#2B2E33"/><rect x="10" y="30" width="140" height="30" rx="3" fill="#3A3E45" stroke="#4A4E55"/><rect x="10" y="30" width="46" height="30" rx="3" fill="${warn}" opacity=".85"/><rect x="56" y="30" width="48" height="30" fill="${warn}" opacity=".85"/><rect x="104" y="30" width="46" height="30" rx="3" fill="#5A6FB0" opacity=".9"/><text x="127" y="50" font-size="10" fill="#fff" text-anchor="middle" font-family="monospace">COLD</text>`; break;
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">${defs}${base}${grain}${o}</svg>`;
+}
+
+/* ---------------- Render defects ---------------- */
+const sevLabel={high:"Fix now",medium:"Fix this pull",low:"Note and adjust"};
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function defectCard(d){
+  return `<details class="defect" data-sev="${d.sev}" data-group="${esc(d.group)}" id="def-${d.id}">
+  <summary>
+    <div class="sk">${sketch(d.sketch)}</div>
+    <div><h3>${esc(d.name)}</h3><div class="sub">${esc(d.sub)}</div></div>
+    <div class="meta"><span class="pill">${esc(d.group)}</span><span class="pill sev-${d.sev==='medium'?'med':d.sev}">${sevLabel[d.sev]}</span></div>
+  </summary>
+  <div class="body">
+    <div><h4>What you see</h4><p>${esc(d.looks)}</p></div>
+    <div><h4>What it means</h4><p>${esc(d.means)}</p></div>
+    <div class="full"><h4>Likely causes, most likely first</h4><ol>${d.causes.map(c=>`<li>${esc(c[0])}${c[1]?`<small>${esc(c[1])}</small>`:""}</li>`).join("")}</ol></div>
+    <div><h4>Fix, in this order</h4><ol class="fixes">${d.fixes.map(f=>`<li>${esc(f)}</li>`).join("")}</ol></div>
+    <div><h4>Prevent it</h4><ul>${d.prevent.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>
+      <div class="quick" style="margin-top:12px"><b>Rule:</b> change one thing, wait five tow-arm lengths, measure, then decide.</div></div>
+  </div></details>`;
+}
+const defectsEl=document.getElementById("defects");
+const filtersEl=document.getElementById("filters");
+let activeGroup="All";
+function renderFilters(){
+  filtersEl.innerHTML=GROUPS.map(g=>`<button type="button" class="chip${g===activeGroup?" on":""}" data-g="${esc(g)}">${esc(g)}${g!=="All"?` <span class="num" style="opacity:.6">${DEFECTS.filter(d=>d.group===g).length}</span>`:""}</button>`).join("");
+}
+function renderDefects(){
+  const q=(document.getElementById("q").value||"").trim().toLowerCase();
+  const list=DEFECTS.filter(d=>(activeGroup==="All"||d.group===activeGroup)&&(!q||JSON.stringify(d).toLowerCase().includes(q)));
+  defectsEl.innerHTML=list.length?list.map(defectCard).join(""):`<div class="unavail">Nothing matches. Try a different word, or use the photo diagnosis below.</div>`;
+}
+filtersEl.addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;activeGroup=b.dataset.g;renderFilters();renderDefects();});
+document.getElementById("q").addEventListener("input",renderDefects);
+renderFilters();renderDefects();
+
+/* ---------------- Checklist persistence ---------------- */
+(function(){
+  const boxes=[...document.querySelectorAll('.check input[type="checkbox"]')];
+  const KEY="lb8520-check";
+  let saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||"{}")||{};}catch(e){saved={};}
+  const update=()=>{
+    let n=0;boxes.forEach(b=>{b.closest("label").classList.toggle("done",b.checked);if(b.checked)n++;});
+    document.getElementById("ckcount").textContent=`${n} / ${boxes.length}`;
+    document.getElementById("ckbar").style.width=(100*n/boxes.length)+"%";
+    try{localStorage.setItem(KEY,JSON.stringify(Object.fromEntries(boxes.map(b=>[b.id,b.checked]))));}catch(e){}
+  };
+  boxes.forEach(b=>{b.checked=!!saved[b.id];b.addEventListener("change",update);});
+  document.getElementById("ckreset").addEventListener("click",()=>{boxes.forEach(b=>b.checked=false);update();});
+  update();
+})();
+
+/* ---------------- Calculators ---------------- */
+(function(){
+  const v=id=>parseFloat(document.getElementById(id).value)||0;
+  const speed=()=>{
+    const tph=v("c-tph"),w=v("c-w"),d=v("c-d"),uw=v("c-uw")||110;
+    const lbPerSqFtIn=uw/9;
+    const lbPerFt=w*d*lbPerSqFtIn;
+    const fpm=lbPerFt?((tph*2000/60)/lbPerFt):0;
+    document.getElementById("c-fpm").textContent=fpm?`${fpm.toFixed(0)} ft / min`:"—";
+    document.getElementById("c-fpm2").textContent=fpm?`${(fpm*60/5280).toFixed(2)} mph · ${(lbPerFt/2000*100).toFixed(2)} tons per 100 ft`:"";
+  };
+  const tons=()=>{
+    const l=v("t-l"),w=v("t-w"),d=v("t-d"),waste=v("t-waste"),uw=v("c-uw")||110;
+    const t=l*w*d*(uw/9)/2000;
+    const tw=t*(1+waste/100);
+    document.getElementById("t-tons").textContent=t?`${tw.toFixed(1)} tons`:"—";
+    document.getElementById("t-tons2").textContent=t?`${t.toFixed(1)} tons net · ${(l*w/9).toFixed(0)} sq yd · ${(l*w).toLocaleString()} sq ft`:"";
+  };
+  ["c-tph","c-w","c-d","c-uw"].forEach(id=>document.getElementById(id).addEventListener("input",()=>{speed();tons();}));
+  ["t-l","t-w","t-d","t-waste"].forEach(id=>document.getElementById(id).addEventListener("input",tons));
+  speed();tons();
+})();
+
+/* ---------------- Scroll spy ---------------- */
+(function(){
+  const links=[...document.querySelectorAll("#nav a")];
+  const ids=links.map(a=>a.getAttribute("href").slice(1));
+  const secs=ids.map(id=>document.getElementById(id)).filter(Boolean);
+  if(!("IntersectionObserver" in window))return;
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+e.target.id));}});},{rootMargin:"-30% 0px -60% 0px"});
+  secs.forEach(s=>io.observe(s));
+})();
+
+/* ---------------- Diagnosis (Claude) ---------------- */
+const KB_SUMMARY = DEFECTS.map(d=>`- id=${d.id} | ${d.name} | looks: ${d.looks} | means: ${d.means} | top causes: ${d.causes.slice(0,3).map(c=>c[0]).join("; ")}`).join("\n");
+const MACHINE_SUMMARY = `LeeBoy 8520B/8520C commercial asphalt paver. 9-ton hopper, dual 36 in slat conveyors, dual 12 in augers (independent L/R, manual or auto with feed sensors), free-floating Legend HD electric-heated screed 8–15 ft with hydraulic front-mounted extensions, thickness cranks (flight screws) each side, electric tow point actuators 0–6 in with gauges both sides, thicker/thinner switches at the operator station, lead/tail crown adjustment, extension height and slope adjusters, pre-strike-off, spring-loaded end gates, screed vibration, truck hitch. Key numbers: mix 275–325 °F, do not lay below 250 °F; screed warm-up 15–20 min; head of material at auger shaft centreline; augers run 85–90 % of the time slowly; wait 5 tow-arm lengths (30–50 ft) after any adjustment; roll-down 20–25 % (1/4 in per inch); minimum lift 3 × top rock size; lead crown 1/8 in above tail crown; extension rear edge flush to 1/16 in above main plate; joint overlap 1–1.5 in.`;
+
+const resultEl=document.getElementById("result");
+const thumbsEl=document.getElementById("thumbs");
+let frames=[]; // {blob, url, label}
+let sampleFn=null, imgLimits=null, ctl=null;
+
+function renderExample(){
+  resultEl.innerHTML=`<span class="example-tag">Example result</span>`+renderDiagnosis({
+    primary:{manual_id:"stop-mark",name:"Screed mark (stop and restart mark)",confidence:82,what_you_see:"A straight transverse depression across the full width with a slight ridge just after it, in an otherwise uniform mat.",what_it_means:"The screed settled while the paver was stopped and climbed on restart. The screed itself is fine; the stop procedure is what printed the mark."},
+    causes:[{cause:"Vibration left running while stopped",likelihood:"high",check:"Ask the operator whether vibration was switched off before the stop."},{cause:"Stopped with a low head of material",likelihood:"medium",check:"Was the hopper near empty waiting on a truck?"},{cause:"Thickness adjusted at restart",likelihood:"low",check:"Any crank or tow point input in the last 50 ft?"}],
+    fixes:[{step:"Rake the ridge into the low spot now and get the breakdown roller on it while it is above 250 °F.",detail:""},{step:"For the next stop: conveyors off with a full head, augers off, vibration off, screed left down.",detail:""},{step:"Restart at paving speed with no adjustment.",detail:""}],
+    prevent:["Stage trucks so the paver slows instead of stops.","Truck hitch engaged, trucks in neutral."],
+    alternates:[{name:"Long waves and bumps",why:"If the mark repeats every one to three paver lengths rather than at one stop, it is over-correction, not a stop mark."}],
+    ask_operator:["Did the paver stop here?","Was vibration on during the stop?"],
+    safety_note:""
+  },true);
+}
+function likClass(l){l=String(l||"").toLowerCase();return l.startsWith("h")?"high":l.startsWith("m")?"medium":"low";}
+function renderDiagnosis(r,isExample){
+  const p=r.primary||{};
+  const link=p.manual_id&&DEFECTS.some(d=>d.id===p.manual_id)?`<a href="#def-${esc(p.manual_id)}" onclick="document.getElementById('def-${esc(p.manual_id)}').open=true">Open in the manual</a>`:"";
+  return `
+  <div class="verdict"><div><div class="eyebrow">${isExample?"What a diagnosis looks like":"Most likely"}</div><h3>${esc(p.name||"Unclear from the image")}</h3><p style="color:var(--ink-2);margin-top:4px">${esc(p.what_you_see||"")}</p></div><div class="conf"><b class="num">${p.confidence!=null?esc(p.confidence)+"%":"—"}</b>confidence</div></div>
+  <div class="rsec"><h4>What it means</h4><p>${esc(p.what_it_means||"")}</p>${link?`<p style="margin-top:6px">${link}</p>`:""}</div>
+  ${r.safety_note?`<div class="callout warn" style="margin-top:12px"><b>Safety.</b> ${esc(r.safety_note)}</div>`:""}
+  ${Array.isArray(r.causes)&&r.causes.length?`<div class="rsec"><h4>Causes to check, in order</h4><ol>${r.causes.map(c=>`<li>${esc(c.cause||"")}<span class="lik ${likClass(c.likelihood)}">${esc(c.likelihood||"")}</span>${c.check?`<small>${esc(c.check)}</small>`:""}</li>`).join("")}</ol></div>`:""}
+  ${Array.isArray(r.fixes)&&r.fixes.length?`<div class="rsec"><h4>Do this</h4><ol class="fixes">${r.fixes.map(f=>`<li>${esc(f.step||f)}${f.detail?`<small>${esc(f.detail)}</small>`:""}</li>`).join("")}</ol></div>`:""}
+  ${Array.isArray(r.prevent)&&r.prevent.length?`<div class="rsec"><h4>Prevent it</h4><ul>${r.prevent.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
+  ${Array.isArray(r.alternates)&&r.alternates.length?`<div class="rsec"><h4>Could also be</h4><ul>${r.alternates.map(a=>`<li>${esc(a.name||"")}${a.why?`<small>${esc(a.why)}</small>`:""}</li>`).join("")}</ul></div>`:""}
+  ${Array.isArray(r.ask_operator)&&r.ask_operator.length?`<div class="rsec"><h4>To confirm, answer these</h4><ul>${r.ask_operator.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
+  <p style="margin-top:14px;color:var(--ink-3);font-size:13px">Decision support only. Confirm with a depth gauge, a thermometer and a straightedge before changing the screed.</p>`;
+}
+renderExample();
+
+function addFrame(blob,label){
+  const url=URL.createObjectURL(blob);
+  frames.push({blob,url,label});
+  renderThumbs();
+}
+function renderThumbs(){
+  thumbsEl.innerHTML=frames.map((f,i)=>`<div class="t"><img src="${f.url}" alt="${esc(f.label)}"><span class="lab">${esc(f.label)}</span><button type="button" data-i="${i}" aria-label="Remove">×</button></div>`).join("");
+}
+thumbsEl.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const f=frames.splice(+b.dataset.i,1)[0];if(f)URL.revokeObjectURL(f.url);renderThumbs();});
+
+async function fileToJpeg(file,maxSide=1600){
+  const bmp=await createImageBitmap(file).catch(()=>null);
+  if(!bmp)return file;
+  const s=Math.min(1,maxSide/Math.max(bmp.width,bmp.height));
+  const c=document.createElement("canvas");c.width=Math.round(bmp.width*s);c.height=Math.round(bmp.height*s);
+  c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);
+  return new Promise(res=>c.toBlob(b=>res(b||file),"image/jpeg",.88));
+}
+function extractFrames(file,count){
+  return new Promise((resolve)=>{
+    const v=document.createElement("video");v.muted=true;v.playsInline=true;v.preload="auto";
+    const url=URL.createObjectURL(file);v.src=url;
+    const out=[];
+    v.addEventListener("error",()=>{URL.revokeObjectURL(url);resolve(out);});
+    v.addEventListener("loadedmetadata",async()=>{
+      const dur=isFinite(v.duration)&&v.duration>0?v.duration:5;
+      const times=[];for(let i=0;i<count;i++){times.push(Math.min(dur-0.05,0.4+(dur-0.8)*(count===1?0.5:i/(count-1))));}
+      const c=document.createElement("canvas");
+      const s=Math.min(1,1600/Math.max(v.videoWidth||1600,v.videoHeight||900));
+      c.width=Math.round((v.videoWidth||1600)*s);c.height=Math.round((v.videoHeight||900)*s);
+      for(const t of times){
+        await new Promise(r=>{const done=()=>{v.removeEventListener("seeked",done);r();};v.addEventListener("seeked",done);v.currentTime=t;setTimeout(r,2500);});
+        try{c.getContext("2d").drawImage(v,0,0,c.width,c.height);const b=await new Promise(r=>c.toBlob(r,"image/jpeg",.86));if(b)out.push({blob:b,label:`${t.toFixed(1)}s`});}catch(e){}
+      }
+      URL.revokeObjectURL(url);resolve(out);
+    });
+  });
+}
+async function handleFiles(list){
+  const maxCount=imgLimits?.maxCount||4;
+  for(const file of [...list]){
+    if(frames.length>=maxCount){setStatus(`Up to ${maxCount} images per diagnosis. Remove one to add another.`);break;}
+    if(file.type.startsWith("video/")){
+      setStatus("Pulling frames from the video…",true);
+      const want=Math.max(1,Math.min(4,maxCount-frames.length));
+      const fr=await extractFrames(file,want);
+      if(!fr.length){setStatus("Could not read that video in this browser. Try a photo, or a shorter MP4 clip.");continue;}
+      fr.forEach(f=>addFrame(f.blob,"video "+f.label));
+      setStatus(`${fr.length} frame${fr.length>1?"s":""} ready.`);
+    }else if(file.type.startsWith("image/")){
+      const b=await fileToJpeg(file);addFrame(b,file.name.slice(0,14));setStatus("");
+    }
+  }
+}
+function setStatus(msg,busy){
+  const tag=resultEl.querySelector(".status");
+  if(!msg){if(tag&&tag.dataset.tmp)tag.remove();return;}
+  if(tag&&tag.dataset.tmp){tag.innerHTML=`${busy?'<span class="spinner"></span>':""}${esc(msg)}`;return;}
+  const d=document.createElement("div");d.className="status";d.dataset.tmp="1";d.innerHTML=`${busy?'<span class="spinner"></span>':""}${esc(msg)}`;resultEl.prepend(d);
+}
+const drop=document.getElementById("drop"),fileIn=document.getElementById("file");
+drop.addEventListener("click",()=>fileIn.click());
+drop.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();fileIn.click();}});
+fileIn.addEventListener("change",()=>{handleFiles(fileIn.files);fileIn.value="";});
+["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("over");}));
+["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("over");}));
+drop.addEventListener("drop",e=>{if(e.dataTransfer?.files?.length)handleFiles(e.dataTransfer.files);});
+document.getElementById("clear").addEventListener("click",()=>{frames.forEach(f=>URL.revokeObjectURL(f.url));frames=[];renderThumbs();renderExample();});
+document.getElementById("stop").addEventListener("click",()=>ctl?.abort());
+
+function ctxText(){
+  const g=id=>document.getElementById(id).value.trim();
+  return [`Location of defect: ${g("f-where")}`,`Started: ${g("f-when")}`,g("f-temp")?`Mix temperature at truck: ${g("f-temp")} °F`:"Mix temperature: not given",g("f-depth")?`Compacted depth: ${g("f-depth")} in`:"Depth: not given",g("f-mix")?`Mix: ${g("f-mix")}`:"",g("f-width")?`Paving width: ${g("f-width")} ft`:"",g("f-notes")?`Operator notes: ${g("f-notes")}`:""].filter(Boolean).join("\n");
+}
+const errCopy={not_granted:"Claude access was not allowed for this page, so diagnosis is off for this visit.",sampling_disabled:"Claude is not available on this account.",rate_limited:"Too many requests right now. Wait a minute and try again.",image_rejected:"That image could not be used. Try a JPEG or PNG under 20 MB.",images_unavailable:"This viewer cannot send images. Describe the defect in the notes and diagnose from text.",refused:"Claude declined to analyse that input. Try a clearer photo of the mat.",invalid_json:"The answer came back in an unexpected shape. Try again.",prompt_too_large:"Too much text. Shorten the notes.",session_expired:"Sign in to claude.ai again and retry.",upstream_error:"Connection problem. Try again."};
+
+async function diagnose(){
+  if(!sampleFn)return;
+  const go=document.getElementById("go"),stop=document.getElementById("stop");
+  if(!frames.length&&!document.getElementById("f-notes").value.trim()){setStatus("Add a photo or video, or describe the defect in the notes.");return;}
+  ctl=new AbortController();go.disabled=true;stop.hidden=false;
+  resultEl.innerHTML=`<div class="status"><span class="spinner"></span>Looking at the mat… this can take up to a minute.</div>`;
+  const prompt=`You are an experienced asphalt paving superintendent and LeeBoy service trainer. You are diagnosing a mat or screed problem on a LeeBoy 8520 paver for a JB Lines crew from ${frames.length?`${frames.length} image(s) of the mat (photos or frames from a video)`:"the operator's written description only"} plus the operator's context.
+
+MACHINE
+${MACHINE_SUMMARY}
+
+MANUAL DEFECT LIBRARY (match to one of these ids when it fits; use manual_id "other" if none fits)
+${KB_SUMMARY}
+
+OPERATOR CONTEXT
+${ctxText()}
+
+Instructions: Look carefully at texture, pattern direction (transverse vs longitudinal), location (centre, edge, full width, extension joint, stop line), spacing of any repeating pattern, colour and shine, edge condition, and anything visible of the auger chamber or screed. If the image is not of an asphalt mat or paver, say so in what_you_see and set confidence low. Prefer the most common cause first. Be direct and practical; write for an operator standing at the machine. Keep each string under 220 characters.
+
+Reply with ONLY a JSON object of this exact shape:
+{"primary":{"manual_id":"<id or other>","name":"<defect name>","confidence":<0-100>,"what_you_see":"<one or two sentences>","what_it_means":"<one or two sentences>"},
+ "causes":[{"cause":"<text>","likelihood":"high|medium|low","check":"<how to confirm at the machine>"}],
+ "fixes":[{"step":"<action>","detail":"<numbers or specifics, may be empty>"}],
+ "prevent":["<text>"],
+ "alternates":[{"name":"<other defect>","why":"<how to tell them apart>"}],
+ "ask_operator":["<question that would raise confidence>"],
+ "safety_note":"<empty string unless a real hazard applies>"}`;
+  try{
+    const opts={signal:ctl.signal,modelTier:"default",cache:false};
+    if(frames.length)opts.images=frames.map(f=>f.blob);
+    const r=await sampleFn.json(prompt,opts);
+    resultEl.innerHTML=renderDiagnosis(r||{},false);
+  }catch(e){
+    if(e&&e.code==="cancelled"){renderExample();}
+    else{
+      const code=e&&e.code||"upstream_error";
+      resultEl.innerHTML=`<div class="status"><span class="err">${esc(errCopy[code]||errCopy.upstream_error)}</span></div>${e&&e.text?`<pre style="white-space:pre-wrap;font-family:var(--mono);font-size:12px;color:var(--ink-2);margin-top:10px">${esc(e.text.slice(0,2000))}</pre>`:""}`;
+      if(code==="not_granted"||code==="sampling_disabled"||code==="not_declared"){go.disabled=true;stop.hidden=true;return;}
+    }
+  }
+  go.disabled=false;stop.hidden=true;ctl=null;
+}
+document.getElementById("go").addEventListener("click",diagnose);
+
+/* ---------------- Ask the manual ---------------- */
+const SUGGESTIONS=["How do I level an extension to the main plate?","What crown should I run on a parking lot?","Augers keep cycling on and off. What do I change?","Mix came in at 260 °F. Can I lay it at 1.5 in?","How high do I set the hot side on a longitudinal joint?","What should the tow point gauges read at setup?"];
+const logEl=document.getElementById("log"),suggEl=document.getElementById("sugg");
+suggEl.innerHTML=SUGGESTIONS.map(s=>`<button type="button" class="chip">${esc(s)}</button>`).join("");
+let turns=[];
+const RULES=`You are the LeeBoy 8520 field manual for JB Lines, a paving contractor. Answer operator questions about setting up, running and troubleshooting the 8520 paver and its Legend HD screed. Be direct, practical and specific, with numbers where the manual has them. Use short paragraphs or a numbered list; no headings; plain text only, no markdown symbols. If a question is about wiring, hydraulic pressures, warranty or a specific fault code, say to consult the printed LeeBoy manual or the dealer. If unsure, say so.
+
+MACHINE
+${MACHINE_SUMMARY}
+
+DEFECT LIBRARY
+${KB_SUMMARY}
+
+SETUP SEQUENCE: heat first 15–20 min; set width and balance extensions; level extensions with a straightedge (rear edge flush to 1/16 in high, front matches main angle); pre-strike-off about 1/2 in; lead crown 1/8 in above tail (up to 3/16 in coarse mixes), tail crown to profile (zero for most lots); starting blocks = compacted depth + 20–25 %; null the screed on blocks then add 1/4 to 1/2 turn positive angle of attack; tow point gauges matched near mid-travel; end gates on grade with spring pressure; charge augers to shaft centreline; pull off at paving speed; check depth at 10 ft and 40 ft; adjust in quarter turns and wait 5 tow-arm lengths. JOINTS: 1–1.5 in overlap, hot side 1/4 in per inch of depth higher, end gate on top of the cold mat, roll from the hot side with 6 in overlap. TRUCKS: hitch, neutral, brakes off; fold wings only with material in hopper; three-drop loading; probe every load. SPEED: from plant tons/hr: ft/min = (tph × 2000 / 60) ÷ (width ft × depth in × 12.2).`;
+function addMsg(role,text){const d=document.createElement("div");d.className="msg "+(role==="user"?"u":"a");d.textContent=text;logEl.appendChild(d);d.scrollIntoView({block:"nearest"});return d;}
+async function ask(q){
+  if(!sampleFn||!q.trim())return;
+  const btn=document.getElementById("askbtn"),inp=document.getElementById("askin");
+  addMsg("user",q);inp.value="";btn.disabled=true;
+  turns.push({role:"user",content:q});
+  const bubble=addMsg("assistant","Thinking…");
+  try{
+    const {text}=await sampleFn([{role:"user",content:RULES},...turns.slice(-8)],{cache:false,onText:({text})=>{bubble.textContent=text;}});
+    turns.push({role:"assistant",content:text});
+  }catch(e){
+    const code=e&&e.code||"upstream_error";
+    bubble.textContent=e&&e.text?e.text:(errCopy[code]||errCopy.upstream_error);
+    turns.pop();
+    if(code==="not_granted"||code==="sampling_disabled"){document.getElementById("askform").hidden=true;document.getElementById("ask-unavail").hidden=false;}
+  }
+  btn.disabled=false;
+}
+document.getElementById("askform").addEventListener("submit",e=>{e.preventDefault();ask(document.getElementById("askin").value);});
+suggEl.addEventListener("click",e=>{const b=e.target.closest(".chip");if(b)ask(b.textContent);});
+
+/* ---------------- Light up Claude features ---------------- */
+(async()=>{
+  const s=window.claude&&typeof window.claude.use==="function"?await window.claude.use("sample").catch(()=>null):null;
+  if(!s){
+    document.getElementById("diag-unavail").hidden=false;document.getElementById("go").disabled=true;
+    document.getElementById("ask-unavail").hidden=false;document.getElementById("askform").hidden=true;suggEl.hidden=true;
+    return;
+  }
+  sampleFn=s;
+  const caps=await s.limits().catch(()=>null);
+  if(caps&&caps.images){
+    imgLimits=caps.images;
+    fileIn.accept=[...caps.images.mediaTypes,"video/*"].join(",");
+    document.getElementById("dropnote").textContent=`JPEG, PNG or WebP photos, or a short video clip. Up to ${caps.images.maxCount} images are sent.`;
+  }else{
+    document.getElementById("dropnote").textContent="This viewer can't send images. Describe the defect in the notes and diagnose from text.";
+  }
+})();
+</script>
